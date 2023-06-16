@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 import bodyParser from 'body-parser'
 import swaggerUi from 'swagger-ui-express'
 import YAML from 'yamljs';
-import dataRouter from './src/routes/dataRoutes.js'
+import router from './src/routes/routes.js'
 import { auth } from 'express-oauth2-jwt-bearer';
 
 // initialize express
@@ -25,7 +25,7 @@ dotenv.config()
 console.log(process.env.MONGODB_PASSWORD)
 
 //set up routing
-app.use('/data', dataRouter)
+app.use('/', router)
 
 //set up swagger for OpenApi documentation and an OpenAPI validator
 // const swaggerFilePath = "./documentation/swagger/swagger.yaml"

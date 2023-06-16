@@ -1,11 +1,5 @@
-
-
-// POST /data/profile 
-import mongoose from "../utils/mongoClient.js";
-
 // create or update a user profile
 const postProfile = async (req, res) => {
-  console.log(mongoose.Connection.toString)
   res.status(200).json({ data: "some data" });
 };
 

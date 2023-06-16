@@ -18,14 +18,14 @@ async function main() {
 // Schema definitions
 const Schema = mongoose.Schema;
 
-const phoneContactSchema = new Schema({
+export const phoneContactSchema = new Schema({
     firstName: String,
     extraName: String, //not necessarily last name -- though could be. just more name data
     phoneNumber: String,
     groupType: String //one of { Core, FriendsAndFamily, GroupAllHours, GroupNormalHours } 
 });
 
-const profileSchema = new Schema({
+export const profileSchema = new Schema({
     name: String,
     userID: String, //unique identifier 
     defaultBookendOpenText: String,
@@ -34,6 +34,16 @@ const profileSchema = new Schema({
     // eventually add audio files here
 });
 
+//for authentication management
+
+export const userSchema = new Schema({
+    username: String,
+    email: {
+        type: String,
+        unique: true
+    },
+    password: String
+})
 
 
 
@@ -56,6 +66,3 @@ const profileSchema = new Schema({
 // });
 
 // testProfile.save();
-
-
-export default mongoose;
