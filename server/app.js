@@ -5,12 +5,16 @@ import swaggerUi from 'swagger-ui-express'
 import YAML from 'yamljs';
 import router from './src/routes/routes.js'
 import { auth } from 'express-oauth2-jwt-bearer';
+import cors from "cors"; 
 
 // initialize express
 const app = express()
 
 // to be able to parse http requests
 app.use(bodyParser.json());
+
+//enable CORS
+app.use(cors());
 
 // add jwt token validation for request authorization
 // const jwtCheck = auth({
