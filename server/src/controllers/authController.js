@@ -1,23 +1,50 @@
 import { userSchema } from "../utils/mongoClient.js";
 import mongoose from "mongoose";
 
-
 // POST /login 
 import bcrypt from "bcrypt";
 
 // attempt to login user
+
 const postLogin = async (req, res) => {
-  res.status(200).json({ data: "some data" });
+  const User = mongoose.model("User", userSchema);
+  const storedUser = await User.findOne({ email: req.body.email}).exec();
+  if (!storedUser ) {
+    res.status(400).json({ message: "user not found" });
+  }
+
+  //compare email
+  if (!storedUser.email == req.body.email) {
+    res.status(400).json({ message: "user not found, email or password not matched" });
+  }
+
+  var passValid = false
+  const plaintextPassword = req.body.password;
+  await bcrypt.compare(plaintextPassword, storedUser.password)
+  .then((result) => {
+    console.log(result)
+    passValid = result;
+  })
+  .catch(err => {
+      console.log(err)
+  })
+
+  if (passValid) {
+    res.status(200).json({ data: "successfully logged in" });
+  }
 };
 
 // POST /register
 // attempt to register user
 const postRegister = async (req, res) => {
-  const User = mongoose.model("User", userSchema)
+
+  const User = mongoose.model("User", userSchema);
+  const plaintextPassword = req.body.password;
+  const hash = await bcrypt.hash(plaintextPassword, 10);
   const user = new User({
     username: req.body.username,
     email: req.body.email,
-    password: bcrypt.hash(req.body.password)
+    password: hash
   })
   user.save()
     .then(() => {

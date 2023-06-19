@@ -28,6 +28,12 @@ image.png
 
 Vite for quickstart and bundling. Documentation [here](https://vitejs.dev/)
 
-# Mongoose
+## Mongoose
 
 An ORM for MongoDB, a document storage dabase server. 
+
+## Axios
+
+For making frontent requests to the backend server
+
+https://www.freecodecamp.org/news/how-to-use-axios-with-react/

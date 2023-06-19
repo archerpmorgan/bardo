@@ -21,8 +21,8 @@ app.use(bodyParser.json());
 // app.use('/completion', jwtCheck); // enforce on non-test endpoints
 
 // to read .env file
-dotenv.config()
 console.log(process.env.MONGODB_PASSWORD)
+dotenv.config()
 
 //set up routing
 app.use('/', router)
