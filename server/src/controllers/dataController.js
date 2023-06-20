@@ -6,13 +6,12 @@ const postProfile = async (req, res) => {
 // GET /data/profile
 // get a users profile data for personalization of the experience
 const getProfile = async (req, res) => {
-
   res.status(200).json({ data: "some data" });
 };
 
-// POST /data/session
-// 
-const postSession = async(req, res) => {
+// POST /data/interaction
+// The data corresponding to one use of the app 
+const postInteraction = async(req, res) => {
   res.status(200).json({ data: "some data" });
 }
 
@@ -20,5 +19,4 @@ const postSession = async(req, res) => {
 export default {
   getProfile,
   postProfile,
-  postSession
 };

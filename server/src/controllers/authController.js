@@ -5,19 +5,21 @@ import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 
 // attempt to login user
-
 const postLogin = async (req, res) => {
+  
+  //find user in the database by email
   const User = mongoose.model("User", userSchema);
-  const storedUser = await User.findOne({ email: req.body.email}).exec();
+  const storedUser =  await User.findOne({ email: req.body.email}).exec();
   if (!storedUser ) {
     res.status(400).json({ message: "user not found" });
+    return;
   }
-
   //compare email
-  if (!storedUser.email == req.body.email) {
+  if (storedUser.email != req.body.email) {
     res.status(400).json({ message: "user not found, email or password not matched" });
+    return;
   }
-
+  //compare password
   var passValid = false
   const plaintextPassword = req.body.password;
   await bcrypt.compare(plaintextPassword, storedUser.password)
@@ -28,9 +30,14 @@ const postLogin = async (req, res) => {
   .catch(err => {
       console.log(err)
   })
-
   if (passValid) {
-    res.status(200).json({ data: "successfully logged in" });
+    // check for active session
+    req.session.user = storedUser.id;
+    req.session.save();
+    res.status(200).json({ 
+      message: "successfully logged in",
+      userId: storedUser.id
+    });
   }
 };
 
