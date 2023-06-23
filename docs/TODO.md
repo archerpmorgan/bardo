@@ -11,3 +11,4 @@
 - Develop "safe for github version" that doesn't make me look like such an addict and a personal version which is changed based on the deployment
   - Push to GitHub
 - CI/CD for deployment and hosting
+- write a big article walking through setting the whole application up from source and deploying, in case I forget later
