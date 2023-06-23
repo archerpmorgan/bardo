@@ -1,14 +1,14 @@
-## Next Steps in Ongoing Development
+# Next Steps in Ongoing Development
 
-- Assume there is only one user (me). Build out feature set under this assumption
-  - Register user portal for profile data entry
+- Add an account box to the top right corner which can be used to login, register, and is visually different based on logged in / not logged in
+- Add profile data entry form to the register user flow and require it for permission to proceed through the app
 - Implement audio file feature
-- Implement authentication by hand as in this video: https://youtu.be/j8Yxff6L_po
   - extend application data model to be able to handle different users with their own profiles
 - Frontend design
   - animation
   - logo
   - component styling
-- Develop "safe for github version" that doesn't make me look like such an addict
+- Develop "safe for github version" that doesn't make me look like such an addict and a personal version which is changed based on the deployment
   - Push to GitHub
 - CI/CD for deployment and hosting
+- write a big article walking through setting the whole application up from source and deploying, in case I forget later
