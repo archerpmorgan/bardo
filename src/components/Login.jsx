@@ -1,7 +1,10 @@
 import React, { useState } from "react";
-import ReactDOM from "react-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import {
+    setLogin
+  } from '../redux/slices/authSlice';
 import "./loginstyles.css";
 
 function Login() {
@@ -12,8 +15,9 @@ function Login() {
     const [email, setEmail] = useState("")
     const backendURL = "http://localhost:3000/login";
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
-    const postLogin = (event) => {
+    const postLogin = async (event) => {
         console.log(email);
         event.preventDefault();
 
@@ -24,6 +28,10 @@ function Login() {
             })
             .then((res) => {
                 setLoginError(false);
+                dispatch(setLogin({
+                    "loggedIn": true,
+                    "userId": res.data.userId
+                }))
                 console.log(res);
                 navigate("/");
             }).catch((err) => {

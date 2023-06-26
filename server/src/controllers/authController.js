@@ -6,16 +6,17 @@ import bcrypt from "bcrypt";
 
 // attempt to login user
 const postLogin = async (req, res) => {
-  
   //find user in the database by email
   const User = mongoose.model("User", userSchema);
   const storedUser =  await User.findOne({ email: req.body.email}).exec();
   if (!storedUser ) {
+    console.log("user not found")
     res.status(400).json({ message: "user not found" });
     return;
   }
   //compare email
   if (storedUser.email != req.body.email) {
+    console.log("user not found, email or password not matched")
     res.status(400).json({ message: "user not found, email or password not matched" });
     return;
   }
@@ -26,19 +27,22 @@ const postLogin = async (req, res) => {
   .then((result) => {
     console.log(result)
     passValid = result;
+    if (passValid) {
+      // check for active session
+      req.session.user = storedUser.id;
+      req.session.save();
+      res.status(200).json({ 
+        message: "successfully logged in",
+        userId: storedUser.id
+      });
+    }
+    else {
+      res.status(400).json({ message: "user not found, email or password not matched" });
+    }
   })
   .catch(err => {
-      console.log(err)
+      res.status(400).json({ message: "user not found, email or password not matched" });
   })
-  if (passValid) {
-    // check for active session
-    req.session.user = storedUser.id;
-    req.session.save();
-    res.status(200).json({ 
-      message: "successfully logged in",
-      userId: storedUser.id
-    });
-  }
 };
 
 // POST /register
@@ -54,7 +58,8 @@ const postRegister = async (req, res) => {
     password: hash
   })
   user.save()
-    .then(() => {
+    .then((savedUser) => {
+      console.log(savedUser);
       res.status(200).json({ message: "registration succeeded" });
     })
     .catch(error => {

@@ -3,28 +3,27 @@ import { v4 as uuidv4 } from 'uuid';
 import Bookend from './Bookend';
 // import Call from './Call';
 import { Button, Paper, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 
-export default function InteractionContainer({ setBackHome }) {
+export default function InteractionContainer() {
+  //  what is the data that my InteractionContainer needs to know at any given time?
 
-  //what is the data that my InteractionContainer needs to know at any given time?
+  //  who am I logged in as? (ask redux)
+
   //  PhaseId: Which phase are we on?
   const [phaseId, setPhaseId] = useState(0);
   //  SessionId: What is the current session id (for data correlation later)?
   const [sessionId, setSessionId] = useState(uuidv4());
   console.log('New InteractionContainer: sessionId: ' + sessionId);
-
-  const backToHomeSreen = () => {
-    // someday save interaction state
-    setBackHome(false);
-  };
+  const navigate = useNavigate();
 
   const backHandler = () => {
-    phaseId > 0 ? setPhaseId(phaseId - 1) : backToHomeSreen();
+    phaseId > 0 ? setPhaseId(phaseId - 1) : navigate("/");
   };
 
   const nextHandler = () => {
-    phaseId < 6 ? setPhaseId(phaseId + 1) : backToHomeSreen();
+    phaseId < 6 ? setPhaseId(phaseId + 1) : navigate("/");
   };
 
   const getInnerComponent = (phaseId, sessionId) => {
@@ -39,7 +38,7 @@ export default function InteractionContainer({ setBackHome }) {
     }
   }
 
-  const phaseDesciptions = [
+  const phaseDescriptions = [
     "Bookend open",
     "Data Gathering - Evaluation 1",
     "Call 1",
@@ -53,7 +52,7 @@ export default function InteractionContainer({ setBackHome }) {
   return (
     <Paper>
       <BackButton onPress={backHandler} text="<= BACK" />
-      <Typography>Interaction Container Phase {phaseId}: {phaseDesciptions[phaseId]}</Typography>
+      <Typography>Interaction Container Phase {phaseId}: {phaseDescriptions[phaseId]}</Typography>
       {getInnerComponent(phaseId, sessionId)}
       <NextButton onPress={nextHandler} text="NEXT =>" />
     </Paper>
