@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from './components/Login';
 import Register from './components/Register';
 import Landing from "./components/Landing"
+import React from 'react'
 import UserProfile from './components/UserProfile';
 import './App.css';
 
@@ -15,7 +16,7 @@ function App() {
         <Route path="/user" element={<UserProfile />} />
         <Route path="/register" element={<Register />} />
         <Route path="/interaction" element={<InteractionContainer />} />
-        <Route path="/" element={<Landing />} />
+        <Route path="/*" element={<Landing />} />
       </Routes>
     </Router>
   );

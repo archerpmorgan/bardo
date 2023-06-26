@@ -26,8 +26,8 @@ export const phoneContactSchema = new Schema({
 });
 
 export const profileSchema = new Schema({
-    name: String,
-    userID: String, //unique identifier 
+    username: String,
+    userId: String, //unique identifier 
     defaultBookendOpenText: String,
     defaultBookendCloseText: String,
     phoneContacts: [phoneContactSchema],
@@ -35,7 +35,6 @@ export const profileSchema = new Schema({
 });
 
 //for authentication management
-
 export const userSchema = new Schema({
     username: String,
     email: {

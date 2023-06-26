@@ -3,15 +3,11 @@ import axios from "axios";
 
 const initialState = {
     photo: "",
-    name: "",
-    email: "",
     userId: "",
+    email: "",
     defaultBookendOpenText: "",
     defaultBookendCloseText: "",
-    phoneLists: {
-      fellowsRegularHours: [],
-      fellowsAfterHours: [],
-      nonMemberFriendsAndLovedOnes: []
+    phoneContacts: {
     },
     activities: [],
     recordedMessages: [],
@@ -30,7 +26,7 @@ export const getUserProfileAsync = createAsyncThunk(
       console.log("Trying to get profile for user: " + userId);
       event.preventDefault();
       const response = axios
-        .get("http://localhost:3000/userProfile", {
+        .get("https://localhost:3001/userProfile", {
           "userId": userId,
         })
         .then((res) => {
@@ -56,8 +52,8 @@ export const userProfileSlice = createSlice({
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
     // action: {type = userProfile/updateName}
-    updateName: (state, action) => {
-      state.name = action.payload;
+    setUserProfile: (state, action) => {
+      state = action.payload;
     }
   },
   // The `extraReducers` field lets the slice handle actions defined elsewhere,
@@ -74,7 +70,7 @@ export const userProfileSlice = createSlice({
   },
 });
 
-export const { updateName } = userProfileSlice.actions;
+export const { setUserProfile } = userProfileSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of

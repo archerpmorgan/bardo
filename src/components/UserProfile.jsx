@@ -1,27 +1,34 @@
 import { useState } from 'react';
 import { Button, Paper, Typography } from '@mui/material';
-import { useNavigation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import {
-  selectUserProfile
+selectUserProfile
 } from '../redux/slices/userProfileSlice';
+import {
+  selectAuth
+} from '../redux/slices/authSlice';
 
 export default function UserProfile() {
 
+  const auth = useSelector(selectAuth);
   const userProfile = useSelector(selectUserProfile);
-  console.log(userProfile);
+  
+  const navigate = useNavigate();
 
   const homeHandler = () => {
-    navigate("/landing");
+    navigate("/");
   };
 
+  // eventual styling till be to have everything be editable where it is displayed
+  // perhaps with a hover or a tooltip icon
   return (
     <Paper>
       <Typography>Displaying currently known user profile data</Typography>
       <Typography>photo: {userProfile.photo}</Typography>
-      <Typography>name: {userProfile.name}</Typography>
-      <Typography>email: {userProfile.email}</Typography>
-      <Typography>userId: {userProfile.userId}</Typography>
+      <Typography>username: {auth.username}</Typography>
+      <Typography>email: {auth.email}</Typography>
+      <Typography>userId: {auth.userId}</Typography>
       <Typography>defaultBookendOpenText: {userProfile.defaultBookendOpenText}</Typography>
       <Typography>defaultBookendCloseText: {userProfile.defaultBookendCloseText}</Typography>
       <HomeButton onPress={homeHandler} text="HOME" />

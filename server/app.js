@@ -8,6 +8,8 @@ import sessions from "express-session";
 import RedisStore from "connect-redis"
 import {createClient} from "redis"
 import helmet from "helmet";
+import fs from 'fs';
+import https from 'https';
 
 // initialize express
 const app = express()
@@ -57,8 +59,16 @@ app.use('/', authRouter)
 //add data routes
 app.use('/data', loginRequired, router);
 
+
 // start http server
 const port = 3000
 app.listen(port, () => {
-  console.log(`Bardo Backend listening on port: ${port}`)
+  console.log(`Bardo backend http: ${port}`)
 })
+
+// // start https server for dev 
+// const key = fs.readFileSync('./localhost-key.pem');
+// const cert = fs.readFileSync('./localhost.pem');
+// const server = https.createServer({key: key, cert: cert}, app);
+// app.get('/home', (req, res) => { res.send('Bardo') }); // test route
+// server.listen(3001, () => { console.log('Bardo backend https: 3001') });
