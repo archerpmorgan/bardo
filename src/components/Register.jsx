@@ -12,7 +12,7 @@ function Register() {
     const [password, setPassword] = useState("")
     const [email, setEmail] = useState("")
     const [username, setUsername] = useState("")
-    const backendURL = "https://localhost:3001/register";
+    const backendURL = "http://localhost:3000/register";
     const navigate = useNavigate();
 
     const postRegister = (event) => {

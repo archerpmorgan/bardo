@@ -4,8 +4,6 @@ import mongoose from "mongoose";
 // POST /data/profile
 // create or update a user profile
 const postProfile = async (req, res) => {
-  res.status(200).json({ data: "some data" });
-
   const Profile = mongoose.model("Profile", profileSchema);
   const profile = new Profile({
     photo: "",
@@ -37,15 +35,15 @@ const getProfile = async (req, res) => {
   //find user in the database by email and userId
   const Profile = mongoose.model("Profile", profileSchema);
   const storedProfile = await Profile.findOne({
-    email: req.body.email,
-    userId: req.body.userId
+    userId: req.query.userId
   }).exec();
   if (!storedProfile) {
     console.log("profile not found")
-    res.status(400).json({ message: "profile not found" });
-    return;
+    res.status(200).json({ message: "profile not found" });
+  } else {
+    console.log("profile found")
+    res.status(200).json(storedProfile);
   }
-  res.status(200).json(storedProfile);
 };
 
 // POST /data/interaction

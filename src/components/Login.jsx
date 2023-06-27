@@ -14,21 +14,20 @@ import "./loginstyles.css";
 function Login() {
 
     const [loginError, setLoginError] = useState(false)
-    const [profileNotFound, setProfileNotFound] = useState(false)
     const [loginErrorMessage, setLoginErrorMessage] = useState("")
     const [password, setPassword] = useState("")
     const [email, setEmail] = useState("")
     const auth = useSelector(selectAuth);
-    const backendURL = "https://localhost:3001/";
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    axios.defaults.withCredentials = true;
 
     const postLogin = async (event) => {
         console.log(email);
         event.preventDefault();
 
         await axios
-            .post("/api" + "/login", {
+            .post("http://localhost:3000/login", {
                 "email": email,
                 "password": password
             })
@@ -48,29 +47,47 @@ function Login() {
         //if login was successful, attempt to get user profile 
         //or create one if this user does not yet have a profile
         if (!loginError) {
+            console.log(auth)
             await axios
-                .get(backendURL + "data/profile", {
-                    "email": auth.email,
-                    "userId": auth.userId,
+                .get("http://localhost:3000/data/profile", {
+                    params: {
+                        "email": auth.email,
+                        "userId": auth.userId,
+                    },
                 })
                 .then((res) => {
-                    // dispatch(setUserProfile())
+                    if (String(res.data.message).includes("not found")) {
+                        createProfile();
+                    }
                     console.log(res)
                 }).catch((err) => {
-                    if (err.response) {
-                        if (err.response.status == 404){ // could not find the profile
-                            setProfileNotFound(true);
-                        } 
-                    }
-                    console.log(err)
+                    console.log(err);
                 });
         }
-        
-        if (profileNotFound) {
-            console.log("profile not found")
-        }
+        navigate("/");
+    }
 
-        // navigate("/");
+    const createProfile = async () => {
+        console.log("profile not found, creating one for " + String(auth.email))
+        await axios
+            .post("http://localhost:3000/data/profile", {
+                "userId": String(auth.userId),
+                "photo": "",
+                "username": String(auth.username),
+                "defaultBookendCloseText": "open",
+                "defaultBookendOpenText": "close",
+                "phoneContacts": []
+            })
+            .then((res) => {
+                console.log("new profile created")
+            }).catch((err) => {
+                if (err.response) {
+                    if (err.response.status == 404) { // could not find the profile
+                        setProfileNotFound(true);
+                    }
+                }
+                console.log(err)
+            });
     }
 
     const handleEmailChange = (e) => {

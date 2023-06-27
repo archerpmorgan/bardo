@@ -8,8 +8,8 @@ import sessions from "express-session";
 import RedisStore from "connect-redis"
 import {createClient} from "redis"
 import helmet from "helmet";
-import fs from 'fs';
-import https from 'https';
+// import fs from 'fs';
+// import https from 'https';
 
 // initialize express
 const app = express()
@@ -20,9 +20,14 @@ app.use(express.urlencoded({ extended: true }));
 // cookie parser middleware
 app.use(cookieParser());
 
-// enable CORS
-app.use(cors());
-app.use(helmet());
+// enable CORS for authentication flow
+app.use(cors({
+  "origin": "http://localhost:5173",
+  "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+  "preflightContinue": false,
+  "optionsSuccessStatus": 204,
+  "credentials": true,
+})); 
 
 // to read .env file
 console.log(process.env.MONGODB_PASSWORD)
@@ -50,7 +55,7 @@ app.use(sessions({
   cookie: { maxAge: 1000 * 60 * 60 },
   resave: false,
   httpOnly: true,
-  secure: true,
+  secure: false, // for development without SSL set up
   ephemeral: true
 }))
 

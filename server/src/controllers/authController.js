@@ -35,6 +35,7 @@ const postLogin = async (req, res) => {
         message: "successfully logged in",
         userId: storedUser.id
       });
+      return;
     }
     else {
       res.status(400).json({ message: "user not found, email or password not matched" });
