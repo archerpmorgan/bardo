@@ -45,7 +45,7 @@ const postLogin = async (req, res) => {
       res.status(400).json({ message: "user not found, email or password not matched" });
   })
 };
-
+s
 // POST /register
 // attempt to register user
 const postRegister = async (req, res) => {

@@ -2,6 +2,8 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from "axios";
 
 const initialState = {
+  loading: 'idle',  //'idle' | 'pending' | 'succeeded' | 'failed',
+  profile: {
     photo: "",
     userId: "",
     email: "",
@@ -12,6 +14,7 @@ const initialState = {
     activities: [],
     recordedMessages: [],
     internetContent: [] //meditation videos, prayers, etc.
+  }
 };
 
 // The function below is called a thunk and allows us to perform async logic. It
@@ -35,7 +38,7 @@ export const getUserProfileAsync = createAsyncThunk(
         }).catch((err) => {
           console.log(err)
         });
-        return response.data;
+      return response.data;
     }
     const response = await getUserProfile();
     return response;
@@ -53,7 +56,7 @@ export const userProfileSlice = createSlice({
   reducers: {
     // action: {type = userProfile/updateName}
     setUserProfile: (state, action) => {
-      state = action.payload;
+      state.profile = action.payload;
     }
   },
   // The `extraReducers` field lets the slice handle actions defined elsewhere,
