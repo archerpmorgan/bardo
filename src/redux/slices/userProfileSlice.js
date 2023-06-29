@@ -2,11 +2,13 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from "axios";
 
 const initialState = {
-  loading: 'idle',  //'idle' | 'pending' | 'succeeded' | 'failed',
+  isLoading: false,
+  isFetchComplete: false, // inspect to see if we need to fetch or have already done so
+  isFetchError: false,
   profile: {
     photo: "",
     userId: "",
-    email: "",
+    username: "",
     defaultBookendOpenText: "",
     defaultBookendCloseText: "",
     phoneContacts: {
@@ -17,36 +19,27 @@ const initialState = {
   }
 };
 
-// The function below is called a thunk and allows us to perform async logic. It
-// can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
-// will call the thunk with the `dispatch` function as the first argument. Async
-// code can then be executed and other actions can be dispatched. Thunks are
-// typically used to make async requests.
 export const getUserProfileAsync = createAsyncThunk(
-  'userProfile/fetchFromCloudStorage',
+  'userProfile/getUserProfileAsync',
   async (userId) => {
-    const gerUserProfile = async (event) => {
-      console.log("Trying to get profile for user: " + userId);
-      event.preventDefault();
-      const response = axios
-        .get("https://localhost:3001/userProfile", {
+    let data = null;
+    console.log('thunk running to fetch profile')
+    await axios
+      .get("http://localhost:3000/data/profile", {
+        params: {
           "userId": userId,
-        })
-        .then((res) => {
-          console.log(res);
-          // persist profile
-        }).catch((err) => {
-          console.log(err)
-        });
-      return response.data;
-    }
-    const response = await getUserProfile();
-    return response;
+        }
+      })
+      .then((res) => {
+        data = res.data
+        console.log(res);
+      }).catch((err) => {
+        console.log(err)
+      });
+    return data;
   }
 );
 
-// The createSlice toolkit is a way of expressing the actions, action creators, and reducers all at once in the same place
-// purely exists to reduce tedium
 
 // note: there is state mutating logic in these reducers, which is only made possible by the abstraction created by the toolkit
 export const userProfileSlice = createSlice({
@@ -64,11 +57,19 @@ export const userProfileSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getUserProfileAsync.pending, (state) => {
-        state.status = 'loading';
+        state.isLoading = true
+        state.isFetchComplete = false;
       })
       .addCase(getUserProfileAsync.fulfilled, (state, action) => {
-        state.status = 'idle';
-        state.value = action.payload;
+        state.isLoading = false;
+        state.isFetchComplete = true;
+        state.profile = action.payload;
+      })
+      .addCase(getUserProfileAsync.rejected, (state, action) => {
+        state.isLoading = false
+        state.isFetchComplete = false;
+        state.isFetchError = true;
+        console.log(action.error.message);
       });
   },
 });
@@ -78,6 +79,8 @@ export const { setUserProfile } = userProfileSlice.actions;
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
 // in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
-export const selectUserProfile = (state) => state.userProfile;
+export const selectUserProfile = (state) => state.profile;
+export const selectLoadingStatus = (state) => state.isLoading;
+export const selectFetchComplete = (state) => state.isFetchComplete;
 
 export default userProfileSlice.reducer;

@@ -1,4 +1,4 @@
-import { userSchema } from "../utils/mongoClient.js";
+import { userSchema, profileSchema } from "../utils/mongoClient.js";
 import mongoose from "mongoose";
 
 // POST /login 
@@ -45,7 +45,7 @@ const postLogin = async (req, res) => {
       res.status(400).json({ message: "user not found, email or password not matched" });
   })
 };
-s
+
 // POST /register
 // attempt to register user
 const postRegister = async (req, res) => {
@@ -54,14 +54,24 @@ const postRegister = async (req, res) => {
   const plaintextPassword = req.body.password;
   const hash = await bcrypt.hash(plaintextPassword, 10);
   const user = new User({
-    username: req.body.username,
     email: req.body.email,
     password: hash
   })
   user.save()
     .then((savedUser) => {
       console.log(savedUser);
-      res.status(200).json({ message: "registration succeeded" });
+      //create user profile
+      const Profile = mongoose.model("Profile", profileSchema);
+      const profile = new Profile({
+        photo: "",
+        username: req.body.username,
+        userId: savedUser.id,
+        phoneContacts: []
+      })
+      profile.save()
+      .then( () => {
+        res.status(200).json({ message: "registration succeeded" });
+      })
     })
     .catch(error => {
       if (error.code === 11000) {

@@ -7,7 +7,7 @@ import {
     selectAuth, setLogin
 } from '../redux/slices/authSlice';
 import {
-    setUserProfile
+    getUserProfileAsync
 } from '../redux/slices/userProfileSlice';
 import "./loginstyles.css";
 
@@ -38,56 +38,15 @@ function Login() {
                     "userId": res.data.userId,
                     "email": email,
                 }))
+                //if login was successful, attempt to get user profile 
+                dispatch(getUserProfileAsync(res.data.userId));
             }).catch((err) => {
-                setLoginError(true)
                 setLoginErrorMessage(err.message)
                 console.log(err)
             });
 
-        //if login was successful, attempt to get user profile 
-        //or create one if this user does not yet have a profile
-        if (!loginError) {
-            console.log(auth)
-            await axios
-                .get("http://localhost:3000/data/profile", {
-                    params: {
-                        "email": auth.email,
-                        "userId": auth.userId,
-                    },
-                })
-                .then((res) => {
-                    if (String(res.data.message).includes("not found")) {
-                        createProfile();
-                    }
-                    console.log(res)
-                }).catch((err) => {
-                    console.log(err);
-                });
-        }
-        navigate("/");
-    }
 
-    const createProfile = async () => {
-        console.log("profile not found, creating one for " + String(auth.email))
-        await axios
-            .post("http://localhost:3000/data/profile", {
-                "userId": String(auth.userId),
-                "photo": "",
-                "username": String(auth.username),
-                "defaultBookendCloseText": "open",
-                "defaultBookendOpenText": "close",
-                "phoneContacts": []
-            })
-            .then((res) => {
-                console.log("new profile created")
-            }).catch((err) => {
-                if (err.response) {
-                    if (err.response.status == 404) { // could not find the profile
-                        setProfileNotFound(true);
-                    }
-                }
-                console.log(err)
-            });
+        navigate("/");
     }
 
     const handleEmailChange = (e) => {

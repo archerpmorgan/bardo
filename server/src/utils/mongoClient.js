@@ -26,17 +26,33 @@ export const phoneContactSchema = new Schema({
 });
 
 export const profileSchema = new Schema({
-    username: String,
-    userId: String, //unique identifier 
-    defaultBookendOpenText: String,
-    defaultBookendCloseText: String,
+    username:  {
+        type: String,
+        default: "default"
+    },
+    photo:  {
+        type: String,
+        default: "default"
+    },
+    userId:  {
+        type: String,
+        default: "default"
+    }, //unique identifier 
+    defaultBookendOpenText: {
+        type: String,
+        default: "default"
+    },
+    defaultBookendCloseText:
+    {
+        type: String,
+        default: "default"
+    },
     phoneContacts: [phoneContactSchema],
     // eventually add audio files here
 });
 
 //for authentication management
 export const userSchema = new Schema({
-    username: String,
     email: {
         type: String,
         unique: true
