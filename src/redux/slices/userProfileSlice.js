@@ -78,5 +78,4 @@ export const { setUserProfile } = userProfileSlice.actions;
 export const selectUserProfile = (state) => state.userProfile.profile;
 export const selectLoadingStatus = (state) => state.userProfile.isLoading;
 export const selectFetchComplete = (state) => state.userProfile.isFetchComplete;
-
 export default userProfileSlice.reducer;

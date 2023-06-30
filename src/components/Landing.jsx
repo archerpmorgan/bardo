@@ -9,6 +9,7 @@ import AccountBox from './AccountBox';
 const Landing = () => {
 
   const navigate = useNavigate();
+
   return (
     <>
       <AccountBox></AccountBox>
