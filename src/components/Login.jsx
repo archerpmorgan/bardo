@@ -1,7 +1,14 @@
 import React, { useState } from "react";
-import ReactDOM from "react-dom";
+import { Button } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    selectAuth, setLogin
+} from '../redux/slices/authSlice';
+import {
+    getUserProfileAsync
+} from '../redux/slices/userProfileSlice';
 import "./loginstyles.css";
 
 function Login() {
@@ -10,27 +17,36 @@ function Login() {
     const [loginErrorMessage, setLoginErrorMessage] = useState("")
     const [password, setPassword] = useState("")
     const [email, setEmail] = useState("")
-    const backendURL = "http://localhost:3000/login";
+    const auth = useSelector(selectAuth);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    axios.defaults.withCredentials = true;
 
-    const postLogin = (event) => {
+    const postLogin = async (event) => {
         console.log(email);
         event.preventDefault();
 
-        axios
-            .post(backendURL, {
+        await axios
+            .post("http://localhost:3000/login", {
                 "email": email,
                 "password": password
             })
             .then((res) => {
                 setLoginError(false);
-                console.log(res);
-                navigate("/");
+                dispatch(setLogin({
+                    "loggedIn": true,
+                    "userId": res.data.userId,
+                    "email": email,
+                }))
+                //if login was successful, attempt to get user profile 
+                dispatch(getUserProfileAsync(res.data.userId));
             }).catch((err) => {
-                setLoginError(true)
                 setLoginErrorMessage(err.message)
                 console.log(err)
             });
+
+
+        navigate("/");
     }
 
     const handleEmailChange = (e) => {
@@ -60,6 +76,7 @@ function Login() {
                         <div className="button-container">
                             <input type="submit" />
                         </div>
+                        <Button onClick={() => { navigate("/register") }} >Register</Button>
                         {loginError ? <div className="error">{loginErrorMessage}</div> : <></>}
                     </form>
                 </div>

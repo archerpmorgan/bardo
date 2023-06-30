@@ -8,6 +8,8 @@ import sessions from "express-session";
 import RedisStore from "connect-redis"
 import {createClient} from "redis"
 import helmet from "helmet";
+// import fs from 'fs';
+// import https from 'https';
 
 // initialize express
 const app = express()
@@ -18,9 +20,14 @@ app.use(express.urlencoded({ extended: true }));
 // cookie parser middleware
 app.use(cookieParser());
 
-// enable CORS
-app.use(cors());
-app.use(helmet());
+// enable CORS for authentication flow
+app.use(cors({
+  "origin": "http://localhost:5173",
+  "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+  "preflightContinue": false,
+  "optionsSuccessStatus": 204,
+  "credentials": true,
+})); 
 
 // to read .env file
 console.log(process.env.MONGODB_PASSWORD)
@@ -48,7 +55,7 @@ app.use(sessions({
   cookie: { maxAge: 1000 * 60 * 60 },
   resave: false,
   httpOnly: true,
-  secure: true,
+  secure: false, // for development without SSL set up
   ephemeral: true
 }))
 
@@ -57,8 +64,16 @@ app.use('/', authRouter)
 //add data routes
 app.use('/data', loginRequired, router);
 
+
 // start http server
 const port = 3000
 app.listen(port, () => {
-  console.log(`Bardo Backend listening on port: ${port}`)
+  console.log(`Bardo backend http: ${port}`)
 })
+
+// // start https server for dev 
+// const key = fs.readFileSync('./localhost-key.pem');
+// const cert = fs.readFileSync('./localhost.pem');
+// const server = https.createServer({key: key, cert: cert}, app);
+// app.get('/home', (req, res) => { res.send('Bardo') }); // test route
+// server.listen(3001, () => { console.log('Bardo backend https: 3001') });

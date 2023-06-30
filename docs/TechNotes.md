@@ -37,3 +37,20 @@ An ORM for MongoDB, a document storage dabase server.
 For making frontent requests to the backend server
 
 https://www.freecodecamp.org/news/how-to-use-axios-with-react/
+
+## Proxying Backend Server in Dev
+
+https://medium.com/bb-tutorials-and-thoughts/react-how-to-proxy-to-backend-server-5588a9e0347
+
+## HTTPS/SSL In Development
+
+[Here](https://vitejs.dev/config/server-options.html#server-https) are instructions for development SSL cert in Vite build
+
+[Here](https://medium.com/@nitinpatel_20236/how-to-create-an-https-server-on-localhost-using-express-366435d61f28) are instructions for development SSL cert in Express
+
+pass: bardodev
+
+## Redux
+
+This app uses the [Redux Toolkit](https://redux-toolkit.js.org/) for abstracting away a lot of the redux boilerplate stuff. I have notes on it in my personal notes.
+

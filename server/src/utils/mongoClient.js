@@ -26,43 +26,37 @@ export const phoneContactSchema = new Schema({
 });
 
 export const profileSchema = new Schema({
-    name: String,
-    userID: String, //unique identifier 
-    defaultBookendOpenText: String,
-    defaultBookendCloseText: String,
+    username:  {
+        type: String,
+        default: "default"
+    },
+    photo:  {
+        type: String,
+        default: "default"
+    },
+    userId:  {
+        type: String,
+        default: "default",
+        unique: true
+    },
+    defaultBookendOpenText: {
+        type: String,
+        default: "default"
+    },
+    defaultBookendCloseText:
+    {
+        type: String,
+        default: "default"
+    },
     phoneContacts: [phoneContactSchema],
     // eventually add audio files here
 });
 
 //for authentication management
-
 export const userSchema = new Schema({
-    username: String,
     email: {
         type: String,
         unique: true
     },
     password: String
 })
-
-
-
-// Create some data to test the db connection with 
-// const PhoneContact = mongoose.model("PhoneContact", phoneContactSchema);
-// const Profile = mongoose.model("Profile", profileSchema);
-// const testProfile = new Profile({
-//     name: "Archer",
-//     userID: "123",
-//     defaultBookendCloseText: "",
-//     defaultBookendCloseText: "",
-//     phoneContacts: [
-//         new PhoneContact({
-//             firstName: "Laura",
-//             extraName: "SAA",
-//             phoneNumber: "5555555555",
-//             groupType: "Core"
-//         })
-//     ]
-// });
-
-// testProfile.save();
