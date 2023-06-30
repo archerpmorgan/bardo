@@ -14,7 +14,6 @@ export default function UserProfile() {
   const auth = useSelector(selectAuth);
   const userProfile = useSelector(selectUserProfile);
   const fetchComplete = useSelector(selectFetchComplete);
-  console.log(userProfile);
 
   const navigate = useNavigate();
   const homeHandler = () => {
