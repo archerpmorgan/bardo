@@ -24,7 +24,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-*package*
 
 // documentation that is not that presentable yet -- will push with feature branches
 Storage.md
