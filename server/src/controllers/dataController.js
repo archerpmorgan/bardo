@@ -1,6 +1,6 @@
 import { profileSchema, phoneContactSchema } from "../utils/mongoClient.js";
-import uploadFile from "../utils/blobClient.js"
 import mongoose from "mongoose";
+import blobClient from "../utils/blobClient.js"
 
 // POST /data/profile
 // create or update a user profile
@@ -54,8 +54,11 @@ const postInteraction = async (req, res) => {
 }
 
 // POST /data/audio
-// upload an audio file 
+// upload an audio file to blob storage, return blob name
 const postAudioFile = async (req, res) => {
+  let buffer = req.file.buffer;
+  const blobName = await blobClient.uploadFile(buffer);
+  console.log(blobName);
   res.status(200).json({ data: "some data" });
 }
 

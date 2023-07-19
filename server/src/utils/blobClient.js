@@ -10,32 +10,30 @@ const getBlobName = originalName => {
     return `${identifier}-${originalName}`;
 };
 
-const handleError = (err, res) => {
-    res.status(500);
-    res.render('error', { error: err });
-};
+const uploadFile = async (buffer) => {
 
-export default async function uploadFile(originalName, buffer){
-
+    console.log("got here")
     const
-          blobName = getBlobName(originalName)
-        , blobService = new BlockBlobClient(connectionString,containerName,blobName)
+        blobName = getBlobName("audio")
+        , blobService = new BlockBlobClient(connectionString, containerName, blobName)
         , stream = getStream(buffer)
         , streamLength = buffer.length
-    ;
+        ;
 
     blobService.uploadStream(stream, streamLength)
-    .then(
-        ()=>{
-            res.render('success', { 
-                message: 'File uploaded to Azure Blob storage.' 
-            });
-        }
-    ).catch(
-        (err)=>{
-        if(err) {
-            handleError(err);
-            return;
-        }
-    })
+        .then(
+            () => {
+                console.log("got here")
+                return (blobName)
+            }
+        ).catch(
+            (err) => {
+                if (err) {
+                    return (err);
+                }
+            })
+};
+
+export default {
+    uploadFile
 };

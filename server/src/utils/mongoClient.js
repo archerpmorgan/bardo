@@ -1,6 +1,10 @@
 import mongoose, { trusted } from "mongoose";
+import dotenv from 'dotenv';
 
 mongoose.set("strictQuery", false);
+
+// to read .env file
+dotenv.config();
 
 // Define the database URL to connect to.
 const mongoDBConnectionString = `mongodb://${process.env.COSMOS_ENDPOINT}:${process.env.COSMOS_PASSWORD}@${process.env.COSMOS_ENDPOINT}.mongo.cosmos.azure.com:10255/user?ssl=true&retrywrites=false&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@${process.env.COSMOS_ENDPOINT}@`
