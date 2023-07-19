@@ -1,4 +1,5 @@
 import { profileSchema, phoneContactSchema } from "../utils/mongoClient.js";
+import uploadFile from "../utils/blobClient.js"
 import mongoose from "mongoose";
 
 // POST /data/profile
@@ -52,8 +53,15 @@ const postInteraction = async (req, res) => {
   res.status(200).json({ data: "some data" });
 }
 
+// POST /data/audio
+// upload an audio file 
+const postAudioFile = async (req, res) => {
+  res.status(200).json({ data: "some data" });
+}
+
 // Export the controller functions for use in routes
 export default {
   getProfile,
   postProfile,
+  postAudioFile
 };

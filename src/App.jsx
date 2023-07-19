@@ -6,6 +6,7 @@ import Landing from "./components/Landing"
 import React from 'react'
 import UserProfile from './components/UserProfile';
 import './App.css';
+import AudioUploadForm from './components/AudioUploadForm';
 
 function App() {
 
@@ -13,6 +14,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/audio-upload" element={<AudioUploadForm />} />
         <Route path="/user" element={<UserProfile />} />
         <Route path="/register" element={<Register />} />
         <Route path="/interaction" element={<InteractionContainer />} />

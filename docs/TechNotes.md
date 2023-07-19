@@ -54,3 +54,5 @@ pass: bardodev
 
 This app uses the [Redux Toolkit](https://redux-toolkit.js.org/) for abstracting away a lot of the redux boilerplate stuff. I have notes on it in my personal notes.
 
+The audio feature uses [RTK query](https://redux.js.org/tutorials/essentials/part-7-rtk-query-basics) to grab the audio files and to do uploads.
+

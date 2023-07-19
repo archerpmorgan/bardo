@@ -30,7 +30,6 @@ app.use(cors({
 })); 
 
 // to read .env file
-console.log(process.env.MONGODB_PASSWORD)
 dotenv.config()
 
 // protect API by requiring login
@@ -62,7 +61,9 @@ app.use(sessions({
 //set up routing for data and auth
 app.use('/', authRouter)
 //add data routes
-app.use('/data', loginRequired, router);
+// app.use('/data', loginRequired, router);
+app.use('/data', router); // for development
+
 
 
 // start http server
