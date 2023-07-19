@@ -53,10 +53,18 @@ const postInteraction = async (req, res) => {
   res.status(200).json({ data: "some data" });
 }
 
-// POST /data/audio
+// POST /data/audio-file
 // upload an audio file to blob storage, return blob name
 const postAudioFile = async (req, res) => {
   let buffer = req.file.buffer;
+  const blobName = await blobClient.uploadFile(buffer);
+  console.log(blobName);
+  res.status(200).json({ data: "some data" });
+}
+
+// POST /data/audio-file-name
+// after uploading a file to blob, add a key value pair of file name to blob name to the user profile data 
+const postAudioFileName = async (req, res) => {
   const blobName = await blobClient.uploadFile(buffer);
   console.log(blobName);
   res.status(200).json({ data: "some data" });
